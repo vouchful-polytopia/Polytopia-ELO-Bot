@@ -648,6 +648,10 @@ class league(commands.Cog):
             return await ctx.send('You must be a House Leader, Co-Leader, or Mod to use this on another player.')
 
         inactive_role = discord.utils.get(ctx.guild.roles, name=settings.guild_setting(ctx.guild.id, 'inactive_role'))
+        if not inactive_role:
+            logger.warning(f'Could not load Inactive role by name {settings.guild_setting(ctx.guild.id, "inactive_role")}')
+            return await ctx.send('Error loading Inactive role.')
+
         if inactive_role not in target.roles:
             return await ctx.send(
                 f'{target.mention} does not have the *{inactive_role.name}* role.',
